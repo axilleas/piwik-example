@@ -4,7 +4,7 @@
 #
 install_version="2.2.2"
 
-# Download and install Wordpress
+# Download and install Piwik
 
 install_dir=${OPENSHIFT_BUILD_DEPENDENCIES_DIR}${install_version}
 
@@ -12,7 +12,7 @@ install_dir=${OPENSHIFT_BUILD_DEPENDENCIES_DIR}${install_version}
 current_version_dir=${OPENSHIFT_DATA_DIR}current
 
 #
-# If WordPress is already installed in the current gear, there
+# If Piwik is already installed in the current gear, there
 # is nothing to build :-)
 #
 [ -d "${current_version_dir}" ] && exit 0
@@ -22,16 +22,6 @@ mkdir -p $install_dir
 pushd ${install_dir} >/dev/null
 curl -O http://builds.piwik.org/piwik-${install_version}.tar.gz
 
-# Verify the sources
-#
-#tarball_md5=$(md5sum wordpress-${install_version}.tar.gz | cut -d ' ' -f 1)
-#wordpress_md5=$(curl -s http://wordpress.org/wordpress-${install_version}.tar.gz.md5)
-
-#if [ "${tarball_md5}" != "${wordpress_md5}" ]; then
-#  echo "ERROR: Wordpress ${install_version} MD5 checksum mismatch."
-#  exit 1;
-#fi
-
 # Install Piwik
 #
 tar --strip-components=1 -xzf piwik-${install_version}.tar.gz
@@ -39,8 +29,3 @@ rm -rf piwik-${install_version}.tar.gz
 echo $install_version > ${OPENSHIFT_BUILD_DEPENDENCIES_DIR}.current_version
 
 popd >/dev/null
-
-# Copy the OpenShift wp-config.php file
-#
-#cp -f ${OPENSHIFT_REPO_DIR}.openshift/config/wp-config.php ${install_dir}/wp-config.php
-
